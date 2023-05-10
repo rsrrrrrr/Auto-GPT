@@ -15,10 +15,11 @@ Auto-GPT is an experimental open-source application showcasing the capabilities 
 
 <h2 align="AI연구 특허 진흥원"> Demo 5.10 2023 </h2>
 
-git clone https://github.com/rsrrrrrr/Auto-GPT.git
-cd Auto-GPT
-pip install -r requirements.txt
-.\run.bat
+#git clone https://github.com/rsrrrrrr/Auto-GPT.git
+#cd Auto-GPT
+# pip install qiskit
+#pip install -r requirements.txt
+# .\run.bat
 ## 🚀 Features
 
 - 🌐 Internet access for searches and information gathering
