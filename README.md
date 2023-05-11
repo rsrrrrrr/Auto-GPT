@@ -32,9 +32,12 @@ pip install -r requirements.txt
 
 1. Get an OpenAI [API Key](https://platform.openai.com/account/api-keys)
 2. Download the [latest release]
-3. Follow the [installation instructions][docs/setup]
-4. Configure any additional features you want, or install some [plugins][docs/plugins]
-5. [Run][docs/usage] the app
+3. git clone https://github.com/rsrrrrrr/Auto-GPT.git
+4. cd Auto-GPT
+5. pip install qiskit
+6. pip install openai
+7. pip install -r requirements.txt
+8. .\run.bat
 
 Please see the [documentation][docs] for full setup instructions and configuration options.
 
