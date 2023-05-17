@@ -1,0 +1,9 @@
+git clone https://github.com/rsrrrrrr/Auto-GPT.git
+cd Auto-GPT
+git checkout master
+pip install qiskit
+pip install matplotlib
+pip install openai
+pip install –r requirements.txt
+pip install -m requirements.txt
+.\run.bat
