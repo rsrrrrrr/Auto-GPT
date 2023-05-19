@@ -1,0 +1,13 @@
+import yaml
+
+with open("D:/config.yaml", 'r') as file:
+    config = yaml.safe_load(file)
+
+config['GITHUB_API_KEY'] = 'SHA256:khUyzCPO+wOpgybu+Qp7nn2B7FMdezxd6KcjxMwoU2M'
+config['GITHUB_USERNAME'] = 'GITHUB_rsrrrrrr'
+config['GOOGLE_API_KEY'] = 'AIzaSyByu-QSW028l_gaiHMCqxcqUpqEYDy3FNE'
+config['CUSTOM_SEARCH_ENGINE_ID'] = 'c223b1b7b1c8e442e'
+config['OPENAI_API_KEY'] = 'OPENAI_API_KEY'
+
+with open("D:/config.yaml", 'w') as file:
+    yaml.safe_dump(config, file)
