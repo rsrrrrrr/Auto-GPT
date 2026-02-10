@@ -1,6 +1,7 @@
 """Agent manager for managing GPT agents"""
 from __future__ import annotations
 
+import re
 from typing import List
 
 from autogpt.config.config import Config
@@ -143,3 +144,70 @@ class AgentManager(metaclass=Singleton):
             return True
         except KeyError:
             return False
+
+    @staticmethod
+    def _clean_output(text: str) -> str:
+        """Normalize model output so it can be reused as stable context."""
+        collapsed_whitespace = " ".join(text.split())
+        return re.sub(r"[^\w\s.,!?\-:;()]", "", collapsed_whitespace).strip()
+
+    def run_three_agent_cycle(self, task: str, model: str) -> dict[str, str | int]:
+        """Run an end-to-end loop with 3 specialized agents.
+
+        The workflow is:
+        1) Planner agent creates an execution plan for the task.
+        2) Executor agent produces a first-pass result from the plan.
+        3) Reviewer agent cleans and critiques the first-pass result.
+        4) Executor agent performs a second inference pass using clean output.
+        """
+
+        planner_prompt = (
+            "You are the planning agent. Produce a concise, numbered plan to "
+            f"complete this mission: {task}"
+        )
+        planner_key, plan = self.create_agent(
+            task=f"planner:{task}",
+            prompt=planner_prompt,
+            model=model,
+        )
+
+        executor_prompt = (
+            "You are the execution agent. Use this plan to complete the task and "
+            f"return the mission result:\n{plan}"
+        )
+        executor_key, first_result = self.create_agent(
+            task=f"executor:{task}",
+            prompt=executor_prompt,
+            model=model,
+        )
+
+        reviewer_prompt = (
+            "You are the review agent. Clean the output, remove noise, and point out "
+            "critical improvements.\n"
+            f"Task: {task}\n"
+            f"First output: {first_result}"
+        )
+        reviewer_key, review = self.create_agent(
+            task=f"reviewer:{task}",
+            prompt=reviewer_prompt,
+            model=model,
+        )
+
+        clean_output = self._clean_output(review)
+        refined_result = self.message_agent(
+            executor_key,
+            (
+                "Use this cleaned review to perform a second inference pass and "
+                f"return the final result only:\n{clean_output}"
+            ),
+        )
+
+        return {
+            "planner_agent_id": planner_key,
+            "executor_agent_id": executor_key,
+            "reviewer_agent_id": reviewer_key,
+            "plan": plan,
+            "first_result": first_result,
+            "clean_output": clean_output,
+            "refined_result": refined_result,
+        }
