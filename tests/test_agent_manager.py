@@ -63,3 +63,31 @@ def test_delete_agent(agent_manager, task, prompt, model):
     success = agent_manager.delete_agent(key)
     assert success
     assert key not in agent_manager.agents
+
+
+def test_clean_output(agent_manager):
+    dirty_output = "  Result:\n✅ done!!! <script>alert('x')</script>  "
+    cleaned_output = agent_manager._clean_output(dirty_output)
+    assert cleaned_output == "Result: done!!! scriptalertxscript"
+
+
+def test_run_three_agent_cycle(agent_manager, mock_create_chat_completion):
+    mock_create_chat_completion.side_effect = [
+        "1) Gather data 2) Build answer",
+        "raw output with extra ###",
+        "Clean result: mission complete.",
+        "final mission result",
+    ]
+
+    result = agent_manager.run_three_agent_cycle(
+        task="finish the mission",
+        model="gpt-3.5-turbo",
+    )
+
+    assert result["plan"] == "1) Gather data 2) Build answer"
+    assert result["first_result"] == "raw output with extra ###"
+    assert result["clean_output"] == "Clean result: mission complete."
+    assert result["refined_result"] == "final mission result"
+    assert result["planner_agent_id"] != result["executor_agent_id"]
+    assert result["reviewer_agent_id"] != result["executor_agent_id"]
+    assert mock_create_chat_completion.call_count == 4
