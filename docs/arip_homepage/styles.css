@@ -1,0 +1,111 @@
+:root {
+  --bg: #071224;
+  --panel: #12233c;
+  --text: #ecf2ff;
+  --accent: #5b9dff;
+  --muted: #9fb7df;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "Noto Sans KR", sans-serif;
+  background: radial-gradient(circle at top, #14305a 0%, var(--bg) 55%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.hero {
+  padding: 2rem 6vw 4rem;
+}
+
+.top-nav {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.top-nav .brand {
+  margin-right: auto;
+  font-weight: 700;
+}
+
+.top-nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.hero-content {
+  margin-top: 3rem;
+  max-width: 720px;
+}
+
+.badge {
+  display: inline-block;
+  border: 1px solid #2b5694;
+  border-radius: 999px;
+  padding: 0.25rem 0.8rem;
+  font-size: 0.85rem;
+  color: #b8d1fb;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 1rem 0;
+}
+
+.actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1.4rem;
+}
+
+button {
+  border: 0;
+  border-radius: 0.7rem;
+  padding: 0.7rem 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--accent);
+}
+
+button.ghost {
+  border: 1px solid #477ac7;
+  background: transparent;
+}
+
+main {
+  padding: 0 6vw 4rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.card,
+.panel {
+  background: color-mix(in srgb, var(--panel) 80%, #000 20%);
+  border: 1px solid #1f3c63;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.panel {
+  margin-top: 1rem;
+}
+
+ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+  color: var(--muted);
+}
+
+p {
+  color: var(--muted);
+  line-height: 1.55;
+}
